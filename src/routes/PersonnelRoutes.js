@@ -104,6 +104,10 @@ router.get( "/:id", asyncMiddleware( controller.getEmployeeById ) );
  *                              type: string
  *                              description: the address of the employee
  *                              example: Street 1 City
+ *                          number:
+ *                              type: string
+ *                              description: The phone number of the employee
+ *                              example: 0643724597
  *                          emails:
  *                              type: array
  *                              items:
@@ -119,6 +123,7 @@ router.get( "/:id", asyncMiddleware( controller.getEmployeeById ) );
  *                      required:
  *                          - firstname
  *                          - lastname
+ *                          - number
  *      responses:
  *          '204':
  *              description: Created
