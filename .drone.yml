@@ -52,9 +52,9 @@ pipeline:
   deploy-production:
     image: quay.io/honestbee/drone-kubernetes
     namespace: production
-    deployment: invoice-deployment
-    repo: devheavenci/invoice-service
-    container: invoice
+    deployment: personnel-deployment
+    repo: devheavenci/personnel-service
+    container: personnel
     tag: "${DRONE_TAG##v}"
     secrets: [ kubernetes_server, kubernetes_token ]
     when:
