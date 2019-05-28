@@ -104,7 +104,7 @@ router.get( "/:id", asyncMiddleware( controller.getEmployeeById ) );
  *                              type: string
  *                              description: the address of the employee
  *                              example: Street 1 City
- *                          phone:
+ *                          phoneNumber:
  *                              type: string
  *                              description: The phone number of the employee
  *                              example: 0643724597
@@ -183,7 +183,7 @@ router.post( "/", asyncMiddleware( controller.createEmployee ) );
  *                              type: string
  *                              description: the address of the employee
  *                              example: Street 1 City
- *                          phone:
+ *                          phoneNumber:
  *                              type: string
  *                              description: The phone number of the employee
  *                              example: 0643724597
