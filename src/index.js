@@ -54,7 +54,7 @@ app.get( "/health", ( req, res ) => res.json( {
 app.use( "/docs", swaggerUi.serve, swaggerUi.setup( specs ) );
 
 // Routes
-// TODO: add routes
+app.use( "/personnel", require( "./routes/PersonnelRoutes" ) );
 
 // Not found
 app.all( "*", ( req, res ) => res.status( 404 ).json( {
