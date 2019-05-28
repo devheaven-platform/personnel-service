@@ -29,14 +29,14 @@ const uuid = require( "uuid" );
  *                  type: string
  *                  description: The address of the employee
  *                  example: FirstStreet 1 City
- *              number:
+ *              phone:
  *                  type: string
  *                  description: The phone number of the employee
  *                  example: 0643724597
  *          required:
  *              - firstname
  *              - lastname
- *              - number
+ *              - phone
  */
 
 const Employee = new mongoose.Schema( {
@@ -60,7 +60,7 @@ const Employee = new mongoose.Schema( {
         type: String,
         default: "",
     },
-    number: {
+    phone: {
         type: String,
         required: true,
     },

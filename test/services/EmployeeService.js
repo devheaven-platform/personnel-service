@@ -11,14 +11,14 @@ describe( "EmployeeService", () => {
                 lastname: "Doe",
                 salary: 2000,
                 address: "Street 1 City",
-                number: "0643724597",
+                phone: "0643724597",
             };
             const testEmployee2 = {
                 firstname: "Pete",
                 lastname: "Baker",
                 salary: 1500,
                 address: "Street 2 City",
-                number: "0643724597",
+                phone: "0643724597",
             };
 
             await new Employee( testEmployee1 ).save();
@@ -43,7 +43,7 @@ describe( "EmployeeService", () => {
                 lastname: "Doe",
                 salary: 2000,
                 address: "Street 1 City",
-                number: "0643724597",
+                phone: "0643724597",
             };
 
             const { id } = await new Employee( testEmployee1 ).save();
@@ -70,7 +70,7 @@ describe( "EmployeeService", () => {
                 lastname: "Doe",
                 salary: 2000,
                 address: "Street 1 City",
-                number: "0643724597",
+                phone: "0643724597",
             };
 
             const employee = await EmployeeService.createEmployee( testEmployee1 );
@@ -90,7 +90,7 @@ describe( "EmployeeService", () => {
                 lastname: "Doe",
                 salary: 2000,
                 address: "Street 1 City",
-                number: "0643724597",
+                phone: "0643724597",
             };
 
             const { id } = await new Employee( testEmployee1 ).save();
@@ -114,7 +114,7 @@ describe( "EmployeeService", () => {
                 lastname: "Doe",
                 salary: 2000,
                 address: "Street 1 City",
-                number: "0643724597",
+                phone: "0643724597",
             };
 
             const { id } = await new Employee( testEmployee1 ).save();

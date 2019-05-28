@@ -54,14 +54,14 @@ const create = ( body ) => {
         errors.address = "Address must be of type string";
     }
 
-    if ( !body.number ) {
-        errors.number = "Number is required";
-    } else if ( !GenericValidator.isString( body.number ) ) {
-        errors.number = "Number must be a string";
-    } else if ( body.number.trim() === "" ) {
-        errors.number = "Number cannot be a empty string";
-    } else if ( !validator.isMobilePhone( body.number ) ) {
-        errors.number = "Number must be a valid phone number";
+    if ( !body.phone ) {
+        errors.phone = "Phone is required";
+    } else if ( !GenericValidator.isString( body.phone ) ) {
+        errors.phone = "Phone must be a string";
+    } else if ( body.phone.trim() === "" ) {
+        errors.phone = "Phone cannot be a empty string";
+    } else if ( !validator.isMobilePhone( body.phone ) ) {
+        errors.phone = "Phone must be a valid phone number";
     }
 
     if ( !body.emails || !body.emails.length > 0 ) {
