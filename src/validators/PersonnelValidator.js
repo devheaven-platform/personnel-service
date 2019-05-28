@@ -41,7 +41,7 @@ const create = ( body ) => {
     } else if ( body.password.trim() === "" ) {
         errors.password = "Password cannot be a empty string";
     } else if ( !validator.isLength( body.password, { min: 6, max: 40 } ) ) {
-        errors.password = "Password must be between 2 and 20 characters";
+        errors.password = "Password must be between 6 and 40 characters";
     } else if ( !matchRegex( body.password, "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\\s).*$" ) ) {
         errors.password = "Password must contain atleast a capital letter, a number and a lower case letter";
     }
@@ -52,6 +52,16 @@ const create = ( body ) => {
 
     if ( body.address && body.address.trim() !== "" && !GenericValidator.isString( body.address ) ) {
         errors.address = "Address must be of type string";
+    }
+
+    if ( !body.phoneNumber ) {
+        errors.phoneNumber = "Phone is required";
+    } else if ( !GenericValidator.isString( body.phoneNumber ) ) {
+        errors.phoneNumber = "Phone must be a string";
+    } else if ( body.phoneNumber.trim() === "" ) {
+        errors.phoneNumber = "Phone cannot be a empty string";
+    } else if ( !validator.isMobilePhone( body.phoneNumber ) ) {
+        errors.phoneNumber = "Phone must be a valid phone number";
     }
 
     if ( !body.emails || !body.emails.length > 0 ) {
