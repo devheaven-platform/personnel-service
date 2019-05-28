@@ -1,4 +1,5 @@
 const expressPrometheus = require( "express-prom-bundle" );
+const expressWinston = require( "express-winston" );
 const swaggerUi = require( "swagger-ui-express" );
 const bodyparser = require( "body-parser" );
 const Prometheus = require( "prom-client" );
@@ -20,6 +21,7 @@ const mongoDB = process.env.MONGO_DB;
 const mongoURI = process.env.MONGO_URI;
 
 // Middleware
+app.use( expressWinston.logger( logger ) );
 app.use( bodyparser.json() );
 app.use( cors() );
 
