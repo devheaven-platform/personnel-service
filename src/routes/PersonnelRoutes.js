@@ -43,6 +43,8 @@ router.get( "/", asyncMiddleware( controller.getAllEmployees ) );
  *  get:
  *      operationId: GetEmployeeById
  *      summary: Returns a single employee
+ *      security:
+ *          - bearerAuth: []
  *      parameters:
  *          - in: path
  *            name: id

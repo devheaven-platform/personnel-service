@@ -2,6 +2,7 @@ const { expect, should } = require( "chai" );
 
 const Employee = require( "../../src/models/Employee" );
 const EmployeeService = require( "../../src/services/PersonnelService" );
+const Setup = require( "../setup" );
 
 describe( "EmployeeService", () => {
     describe( "getAllEmployees", () => {
@@ -21,8 +22,12 @@ describe( "EmployeeService", () => {
                 phoneNumber: "0643724597",
             };
 
-            await new Employee( testEmployee1 ).save();
-            await new Employee( testEmployee2 ).save();
+            const ids = [];
+            const { id: id1 } = await new Employee( testEmployee1 ).save();
+            const { id: id2 } = await new Employee( testEmployee2 ).save();
+            ids.push( id1 );
+            ids.push( id2 );
+            await Setup.onGetAll( ids );
         } );
 
         it( "Should retrieve all of the employees described above", async () => {
@@ -47,6 +52,8 @@ describe( "EmployeeService", () => {
             };
 
             const { id } = await new Employee( testEmployee1 ).save();
+
+            await Setup.onGetById( id );
 
             const employee = await EmployeeService.getEmployeeById( id );
 
