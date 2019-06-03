@@ -42,7 +42,6 @@ const onGetById = async ( id ) => {
 };
 
 const onGetAll = async ( ids ) => {
-    console.log( "aa" );
     mock.onGet( `${ authUri }/users/` ).reply( 200, [ {
         id: ids[ 0 ],
         roles: [
