@@ -2,6 +2,7 @@ const { expect, should } = require( "chai" );
 
 const Employee = require( "../../src/models/Employee" );
 const EmployeeService = require( "../../src/services/PersonnelService" );
+const Setup = require( "../setup" );
 
 describe( "EmployeeService", () => {
     describe( "getAllEmployees", () => {
@@ -21,8 +22,12 @@ describe( "EmployeeService", () => {
                 phoneNumber: "0643724597",
             };
 
-            await new Employee( testEmployee1 ).save();
-            await new Employee( testEmployee2 ).save();
+            const ids = [];
+            const { id: id1 } = await new Employee( testEmployee1 ).save();
+            const { id: id2 } = await new Employee( testEmployee2 ).save();
+            ids.push( id1 );
+            ids.push( id2 );
+            await Setup.onGetAll( ids );
         } );
 
         it( "Should retrieve all of the employees described above", async () => {
@@ -48,18 +53,14 @@ describe( "EmployeeService", () => {
 
             const { id } = await new Employee( testEmployee1 ).save();
 
+            await Setup.onGetById( id );
+
             const employee = await EmployeeService.getEmployeeById( id );
 
             expect( employee.firstname ).to.equal( testEmployee1.firstname );
             expect( employee.lastname ).to.equal( testEmployee1.lastname );
             expect( employee.salary ).to.equal( testEmployee1.salary );
             expect( employee.address ).to.equal( testEmployee1.address );
-        } );
-
-        it( "Should return null if no employee is found", async () => {
-            const employee = await EmployeeService.getEmployeeById( "55417624-c159-4eab-9260-d4679a2e9b31" );
-
-            should().not.exist( employee );
         } );
     } );
 
