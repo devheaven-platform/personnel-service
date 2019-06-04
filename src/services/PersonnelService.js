@@ -89,10 +89,19 @@ const createEmployee = async ( newEmployee, token ) => {
  * @param {Object} data the data with the updated values
  * @returns the updated employee
  */
-const updateEmployee = async ( id, data ) => {
+const updateEmployee = async ( id, data, token ) => {
     const employee = await Employee.findOneAndUpdate( { _id: id }, data, { new: true } ).exec();
-
-    return employee;
+    const { roles, password, emails } = data;
+    const body = { emails, password, roles };
+    const { data: user } = await axios.patch( `${ authUri }/users/${ id }`, body, { headers: { Authorization: token } } );
+    return {
+        ...user,
+        salary: employee.salary,
+        address: employee.address,
+        firstname: employee.firstname,
+        lastname: employee.lastname,
+        phoneNumber: employee.phoneNumber,
+    };
 };
 
 /**
@@ -101,13 +110,14 @@ const updateEmployee = async ( id, data ) => {
  * @param {*} id the id of the employee that will be removed
  * @returns the removed employee
  */
-const deleteEmployee = async ( id ) => {
+const deleteEmployee = async ( id, token ) => {
     const employee = await Employee.findByIdAndRemove( id );
 
     if ( !employee ) {
         return null;
     }
 
+    await axios.delete( `${ authUri }/users/${ id }`, { headers: { Authorization: token } } );
     return employee;
 };
 
