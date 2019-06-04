@@ -62,12 +62,6 @@ describe( "EmployeeService", () => {
             expect( employee.salary ).to.equal( testEmployee1.salary );
             expect( employee.address ).to.equal( testEmployee1.address );
         } );
-
-        it( "Should return null if no employee is found", async () => {
-            const employee = await EmployeeService.getEmployeeById( "55417624-c159-4eab-9260-d4679a2e9b31" );
-
-            should().not.exist( employee );
-        } );
     } );
 
     describe( "createEmployee", () => {
