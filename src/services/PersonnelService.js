@@ -18,7 +18,7 @@ const getAllEmployees = async ( token ) => {
             const value = authEmployee;
             const emp = find( employees, e => e.id === authEmployee.id );
 
-            if ( !emp ) {
+            if ( emp ) {
                 value.firstname = emp.firstname;
                 value.lastname = emp.lastname;
                 value.phoneNumber = emp.phoneNumber;
