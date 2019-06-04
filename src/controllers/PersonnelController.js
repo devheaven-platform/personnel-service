@@ -46,7 +46,7 @@ const createEmployee = async ( req, res ) => {
         return res.status( 400 ).json( new ApiError( "One or more values are invalid", errors ) );
     }
 
-    const employee = await EmployeeService.createEmployee( req.body );
+    const employee = await EmployeeService.createEmployee( req.body, req.headers.authorization );
 
     return res.status( 201 ).json( employee );
 };

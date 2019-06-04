@@ -63,10 +63,23 @@ const getEmployeeById = async ( id, token ) => {
  * @param {Object} newEmployee the employee that will be created
  * @returns the created employee
  */
-const createEmployee = async ( newEmployee ) => {
+const createEmployee = async ( newEmployee, token ) => {
     const employee = await new Employee( newEmployee ).save();
-
-    return employee;
+    const body = {
+        id: employee.id,
+        emails: newEmployee.emails,
+        roles: newEmployee.roles,
+        password: newEmployee.password,
+    };
+    const { data: user } = await axios.post( `${ authUri }/users/`, body, { headers: { Authorization: token } } );
+    return {
+        ...user,
+        salary: employee.salary,
+        address: employee.address,
+        firstname: employee.firstname,
+        lastname: employee.lastname,
+        phoneNumber: employee.phoneNumber,
+    };
 };
 
 /**
