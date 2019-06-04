@@ -1,7 +1,4 @@
-const { MessageProducer } = require( "../config/messaging/Kafka" );
 const Employee = require( "../models/Employee" );
-
-const producer = new MessageProducer();
 
 /**
  * Returns all employees from the database
@@ -27,12 +24,6 @@ const getEmployeeById = async id => Employee.findById( id ).exec();
 const createEmployee = async ( newEmployee ) => {
     const employee = await new Employee( newEmployee ).save();
 
-    await producer.send( "db.personnel.create-employee", {
-        id: newEmployee.id,
-        emails: newEmployee.emails,
-        roles: newEmployee.roles,
-    } );
-
     return employee;
 };
 
@@ -45,12 +36,6 @@ const createEmployee = async ( newEmployee ) => {
  */
 const updateEmployee = async ( id, data ) => {
     const employee = await Employee.findOneAndUpdate( { _id: id }, data, { new: true } ).exec();
-
-    await producer.send( "db.personnel.update-employee", {
-        id: employee.id,
-        emails: employee.emails,
-        roles: employee.roles,
-    } );
 
     return employee;
 };
@@ -67,10 +52,6 @@ const deleteEmployee = async ( id ) => {
     if ( !employee ) {
         return null;
     }
-
-    await producer.send( "db.personnel.delete-employee", {
-        id: employee.id,
-    } );
 
     return employee;
 };
