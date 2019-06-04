@@ -1,11 +1,31 @@
+const axios = require( "axios" );
 const Employee = require( "../models/Employee" );
+const { find } = require( "lodash" );
+
+const authUri = process.env.AUTH_URI;
 
 /**
  * Returns all employees from the database
  *
  * @returns a list of employees
  */
-const getAllEmployees = async () => Employee.find().exec();
+const getAllEmployees = async ( token ) => {
+    const { data: authEmployees } = await axios.get( `${ authUri }/users/`, { headers: { Authorization: token } } );
+    const employees = await Employee.find().exec();
+
+    return authEmployees.map( ( authEmployee ) => {
+        const value = authEmployee;
+        const emp = find( employees, e => e.id === authEmployee.id );
+
+        value.firstname = emp.firstname;
+        value.lastname = emp.lastname;
+        value.phoneNumber = emp.phoneNumber;
+        value.address = emp.address;
+        value.salary = emp.salary;
+
+        return value;
+    } );
+};
 
 /**
  * Returns a single employee from the database with the given id
@@ -13,7 +33,25 @@ const getAllEmployees = async () => Employee.find().exec();
  * @param {*} id the id of the employee that will be retrieved
  * @returns the employee with the given id
  */
-const getEmployeeById = async id => Employee.findById( id ).exec();
+const getEmployeeById = async ( id, token ) => {
+    const { data: authEmployee } = await axios.get( `${ authUri }/users/${ id }`, { headers: { Authorization: token } } ).catch( () => ( {
+        data: null,
+    } ) );
+
+    if ( !authEmployee ) {
+        return null;
+    }
+
+    const employee = await Employee.findById( id ).exec();
+
+    authEmployee.firstname = employee.firstname;
+    authEmployee.lastname = employee.lastname;
+    authEmployee.phoneNumber = employee.phoneNumber;
+    authEmployee.address = employee.address;
+    authEmployee.salary = employee.salary;
+
+    return authEmployee;
+};
 
 /**
  * Creates a new Employee
