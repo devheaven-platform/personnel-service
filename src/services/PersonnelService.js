@@ -48,11 +48,13 @@ const getEmployeeById = async ( id, token ) => {
 
     const employee = await Employee.findById( id ).exec();
 
-    authEmployee.firstname = employee.firstname;
-    authEmployee.lastname = employee.lastname;
-    authEmployee.phoneNumber = employee.phoneNumber;
-    authEmployee.address = employee.address;
-    authEmployee.salary = employee.salary;
+    if ( employee ) {
+        authEmployee.firstname = employee.firstname;
+        authEmployee.lastname = employee.lastname;
+        authEmployee.phoneNumber = employee.phoneNumber;
+        authEmployee.address = employee.address;
+        authEmployee.salary = employee.salary;
+    }
 
     return authEmployee;
 };
