@@ -65,16 +65,46 @@ const getEmployeeById = async ( id, token ) => {
  * @param {Object} newEmployee the employee that will be created
  * @returns the created employee
  */
-const createEmployee = async newEmployee => new Employee( newEmployee ).save();
+const createEmployee = async ( newEmployee, token ) => {
+    const employee = await new Employee( newEmployee ).save();
+    const body = {
+        id: employee.id,
+        emails: newEmployee.emails,
+        roles: newEmployee.roles,
+        password: newEmployee.password,
+    };
+    const { data: user } = await axios.post( `${ authUri }/users/`, body, { headers: { Authorization: token } } );
+    return {
+        ...user,
+        salary: employee.salary,
+        address: employee.address,
+        firstname: employee.firstname,
+        lastname: employee.lastname,
+        phoneNumber: employee.phoneNumber,
+    };
+};
 
 /**
  * Updates a existing employee with the given values
  *
  * @param {*} id the id of the employee that will be updated
- * @param {Object} employee the employee with the updated values
+ * @param {Object} data the data with the updated values
  * @returns the updated employee
  */
-const updateEmployee = async ( id, employee ) => Employee.findOneAndUpdate( { _id: id }, employee, { new: true } ).exec();
+const updateEmployee = async ( id, data, token ) => {
+    const employee = await Employee.findOneAndUpdate( { _id: id }, data, { new: true } ).exec();
+    const { roles, password, emails } = data;
+    const body = { emails, password, roles };
+    const { data: user } = await axios.patch( `${ authUri }/users/${ id }`, body, { headers: { Authorization: token } } );
+    return {
+        ...user,
+        salary: employee.salary,
+        address: employee.address,
+        firstname: employee.firstname,
+        lastname: employee.lastname,
+        phoneNumber: employee.phoneNumber,
+    };
+};
 
 /**
  * Removes a employee from the database
@@ -82,7 +112,16 @@ const updateEmployee = async ( id, employee ) => Employee.findOneAndUpdate( { _i
  * @param {*} id the id of the employee that will be removed
  * @returns the removed employee
  */
-const deleteEmployee = async id => Employee.findByIdAndRemove( id );
+const deleteEmployee = async ( id, token ) => {
+    const employee = await Employee.findByIdAndRemove( id );
+
+    if ( !employee ) {
+        return null;
+    }
+
+    await axios.delete( `${ authUri }/users/${ id }`, { headers: { Authorization: token } } );
+    return employee;
+};
 
 module.exports = {
     getAllEmployees,

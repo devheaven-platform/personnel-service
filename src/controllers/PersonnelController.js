@@ -46,7 +46,7 @@ const createEmployee = async ( req, res ) => {
         return res.status( 400 ).json( new ApiError( "One or more values are invalid", errors ) );
     }
 
-    const employee = await EmployeeService.createEmployee( req.body );
+    const employee = await EmployeeService.createEmployee( req.body, req.headers.authorization );
 
     return res.status( 201 ).json( employee );
 };
@@ -71,7 +71,7 @@ const updateEmployee = async ( req, res ) => {
         return res.status( 400 ).json( new ApiError( "One or more values are invalid", errors ) );
     }
 
-    const employee = await EmployeeService.updateEmployee( req.params.id, req.body );
+    const employee = await EmployeeService.updateEmployee( req.params.id, req.body, req.headers.authorization );
 
     return res.status( 200 ).json( employee );
 };
@@ -87,7 +87,7 @@ const deleteEmployee = async ( req, res ) => {
         return res.status( 400 ).json( new ApiError( "Id is invalid" ) );
     }
 
-    const employee = await EmployeeService.deleteEmployee( req.params.id );
+    const employee = await EmployeeService.deleteEmployee( req.params.id, req.headers.authorization );
 
     if ( !employee ) {
         return res.status( 404 ).json( new ApiError( "Employee not found" ) );
