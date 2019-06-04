@@ -26,44 +26,7 @@ const router = express.Router();
  *                      schema:
  *                          type: array
  *                          items:
- *                              type: object
- *                              properties:
- *                                  firstname:
- *                                      type: string
- *                                      description: the firstname of the employee
- *                                      example: John
- *                                  lastname:
- *                                      type: string
- *                                      description: the lastname of the employee
- *                                      example: Doe
- *                                  password:
- *                                      type: string
- *                                      description: the password of the employee
- *                                      example: SecretPass123
- *                                  salary:
- *                                      type: number
- *                                      description: the salary of the employee
- *                                      example: 2000
- *                                  address:
- *                                      type: string
- *                                      description: the address of the employee
- *                                      example: Street 1 City
- *                                  phoneNumber:
- *                                      type: string
- *                                      description: The phone number of the employee
- *                                      example: 0643724597
- *                                  emails:
- *                                      type: array
- *                                      items:
- *                                          type: string
- *                                          description: A email of the employee
- *                                          example: JohnDoe@mail.com
- *                                  roles:
- *                                      type: array
- *                                      items:
- *                                          type: string
- *                                          description: A role of the employee
- *                                          example: ROLE_USER
+ *                              $ref: '#/components/schemas/Employee'
  *          '401':
  *              $ref: '#/components/responses/Unauthorized'
  *          '500':
@@ -80,8 +43,6 @@ router.get( "/", asyncMiddleware( controller.getAllEmployees ) );
  *  get:
  *      operationId: GetEmployeeById
  *      summary: Returns a single employee
- *      security:
- *          - bearerAuth: []
  *      parameters:
  *          - in: path
  *            name: id
@@ -95,44 +56,7 @@ router.get( "/", asyncMiddleware( controller.getAllEmployees ) );
  *              content:
  *                  application/json:
  *                      schema:
- *                          type: object
- *                          properties:
- *                              firstname:
- *                                  type: string
- *                                  description: the firstname of the employee
- *                                  example: John
- *                              lastname:
- *                                  type: string
- *                                  description: the lastname of the employee
- *                                  example: Doe
- *                              password:
- *                                  type: string
- *                                  description: the password of the employee
- *                                  example: SecretPass123
- *                              salary:
- *                                  type: number
- *                                  description: the salary of the employee
- *                                  example: 2000
- *                              address:
- *                                  type: string
- *                                  description: the address of the employee
- *                                  example: Street 1 City
- *                              phoneNumber:
- *                                  type: string
- *                                  description: The phone number of the employee
- *                                  example: 0643724597
- *                              emails:
- *                                  type: array
- *                                  items:
- *                                      type: string
- *                                      description: A email of the employee
- *                                      example: JohnDoe@mail.com
- *                              roles:
- *                                  type: array
- *                                  items:
- *                                      type: string
- *                                      description: A role of the employee
- *                                      example: ROLE_USER
+ *                          $ref: '#/components/schemas/Employee
  *          '400':
  *              $ref: '#/components/responses/BadRequest'
  *          '401':

@@ -9,7 +9,7 @@ const validate = require( "../validators/PersonnelValidator" );
  * @param {HttpResponse} res the response object
  */
 const getAllEmployees = async ( req, res ) => {
-    const employees = await EmployeeService.getAllEmployees( req.headers.authorization );
+    const employees = await EmployeeService.getAllEmployees();
     return res.json( employees );
 };
 
@@ -24,7 +24,7 @@ const getEmployeeById = async ( req, res ) => {
         return res.status( 400 ).json( new ApiError( "Id is invalid" ) );
     }
 
-    const employee = await EmployeeService.getEmployeeById( req.params.id, req.headers.authorization );
+    const employee = await EmployeeService.getEmployeeById( req.params.id );
 
     if ( !employee ) {
         return res.status( 404 ).json( new ApiError( "Employee not found" ) );
