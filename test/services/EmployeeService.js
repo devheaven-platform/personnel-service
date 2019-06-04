@@ -121,7 +121,7 @@ describe( "EmployeeService", () => {
             };
 
             const { id } = await new Employee( testEmployee1 ).save();
-
+            Setup.onDelete( id );
             await EmployeeService.deleteEmployee( id );
 
             should().not.exist( await Employee.findById( id ) );
