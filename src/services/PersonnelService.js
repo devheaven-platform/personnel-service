@@ -13,18 +13,22 @@ const getAllEmployees = async ( token ) => {
     const { data: authEmployees } = await axios.get( `${ authUri }/users/`, { headers: { Authorization: token } } );
     const employees = await Employee.find().exec();
 
-    return authEmployees.map( ( authEmployee ) => {
-        const value = authEmployee;
-        const emp = find( employees, e => e.id === authEmployee.id );
+    if ( authEmployees ) {
+        return authEmployees.map( ( authEmployee ) => {
+            const value = authEmployee;
+            const emp = find( employees, e => e.id === authEmployee.id );
 
-        value.firstname = emp.firstname;
-        value.lastname = emp.lastname;
-        value.phoneNumber = emp.phoneNumber;
-        value.address = emp.address;
-        value.salary = emp.salary;
-
-        return value;
-    } );
+            if ( !emp ) {
+                value.firstname = emp.firstname;
+                value.lastname = emp.lastname;
+                value.phoneNumber = emp.phoneNumber;
+                value.address = emp.address;
+                value.salary = emp.salary;
+            }
+            return value;
+        } );
+    }
+    return null;
 };
 
 /**
