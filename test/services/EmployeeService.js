@@ -74,6 +74,7 @@ describe( "EmployeeService", () => {
                 phoneNumber: "0643724597",
             };
 
+            Setup.onPost();
             const employee = await EmployeeService.createEmployee( testEmployee1 );
 
             expect( employee.firstname ).to.equal( testEmployee1.firstname );
@@ -95,6 +96,7 @@ describe( "EmployeeService", () => {
             };
 
             const { id } = await new Employee( testEmployee1 ).save();
+            Setup.onPatch( id );
 
             const employee = await EmployeeService.updateEmployee( id, {
                 firstname: "Jo",
@@ -119,7 +121,7 @@ describe( "EmployeeService", () => {
             };
 
             const { id } = await new Employee( testEmployee1 ).save();
-
+            Setup.onDelete( id );
             await EmployeeService.deleteEmployee( id );
 
             should().not.exist( await Employee.findById( id ) );

@@ -1,6 +1,5 @@
 const axios = require( "axios" );
 const Employee = require( "../models/Employee" );
-const { find } = require( "lodash" );
 
 const authUri = process.env.AUTH_URI;
 
@@ -16,7 +15,7 @@ const getAllEmployees = async ( token ) => {
     if ( authEmployees ) {
         return authEmployees.map( ( authEmployee ) => {
             const value = authEmployee;
-            const emp = find( employees, e => e.id === authEmployee.id );
+            const emp = employees.find( e => e.id === authEmployee.id );
 
             if ( emp ) {
                 value.firstname = emp.firstname;
@@ -48,11 +47,13 @@ const getEmployeeById = async ( id, token ) => {
 
     const employee = await Employee.findById( id ).exec();
 
-    authEmployee.firstname = employee.firstname;
-    authEmployee.lastname = employee.lastname;
-    authEmployee.phoneNumber = employee.phoneNumber;
-    authEmployee.address = employee.address;
-    authEmployee.salary = employee.salary;
+    if ( employee ) {
+        authEmployee.firstname = employee.firstname;
+        authEmployee.lastname = employee.lastname;
+        authEmployee.phoneNumber = employee.phoneNumber;
+        authEmployee.address = employee.address;
+        authEmployee.salary = employee.salary;
+    }
 
     return authEmployee;
 };
@@ -63,10 +64,23 @@ const getEmployeeById = async ( id, token ) => {
  * @param {Object} newEmployee the employee that will be created
  * @returns the created employee
  */
-const createEmployee = async ( newEmployee ) => {
+const createEmployee = async ( newEmployee, token ) => {
     const employee = await new Employee( newEmployee ).save();
-
-    return employee;
+    const body = {
+        id: employee.id,
+        emails: newEmployee.emails,
+        roles: newEmployee.roles,
+        password: newEmployee.password,
+    };
+    const { data: user } = await axios.post( `${ authUri }/users/`, body, { headers: { Authorization: token } } );
+    return {
+        ...user,
+        salary: employee.salary,
+        address: employee.address,
+        firstname: employee.firstname,
+        lastname: employee.lastname,
+        phoneNumber: employee.phoneNumber,
+    };
 };
 
 /**
@@ -76,10 +90,19 @@ const createEmployee = async ( newEmployee ) => {
  * @param {Object} data the data with the updated values
  * @returns the updated employee
  */
-const updateEmployee = async ( id, data ) => {
+const updateEmployee = async ( id, data, token ) => {
     const employee = await Employee.findOneAndUpdate( { _id: id }, data, { new: true } ).exec();
-
-    return employee;
+    const { roles, password, emails } = data;
+    const body = { emails, password, roles };
+    const { data: user } = await axios.patch( `${ authUri }/users/${ id }`, body, { headers: { Authorization: token } } );
+    return {
+        ...user,
+        salary: employee.salary,
+        address: employee.address,
+        firstname: employee.firstname,
+        lastname: employee.lastname,
+        phoneNumber: employee.phoneNumber,
+    };
 };
 
 /**
@@ -88,12 +111,14 @@ const updateEmployee = async ( id, data ) => {
  * @param {*} id the id of the employee that will be removed
  * @returns the removed employee
  */
-const deleteEmployee = async ( id ) => {
+const deleteEmployee = async ( id, token ) => {
     const employee = await Employee.findByIdAndRemove( id );
 
     if ( !employee ) {
         return null;
     }
+
+    await axios.delete( `${ authUri }/users/${ id }`, { headers: { Authorization: token } } );
 
     return employee;
 };
