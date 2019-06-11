@@ -1,6 +1,7 @@
 const express = require( "express" );
 
 const asyncMiddleware = require( "../config/middleware/Async" );
+const authMiddleware = require( "../config/middleware/Auth" );
 const controller = require( "../controllers/PersonnelController" );
 
 /**
@@ -68,10 +69,12 @@ const router = express.Router();
  *              $ref: '#/components/responses/Unauthorized'
  *          '500':
  *              $ref: '#/components/responses/InternalServerError'
+ *      security:
+ *        - bearerAuth: []
  *      tags:
  *          - Employee
  */
-router.get( "/", asyncMiddleware( controller.getAllEmployees ) );
+router.get( "/", authMiddleware, asyncMiddleware( controller.getAllEmployees ) );
 
 /**
  * @swagger
@@ -80,8 +83,6 @@ router.get( "/", asyncMiddleware( controller.getAllEmployees ) );
  *  get:
  *      operationId: GetEmployeeById
  *      summary: Returns a single employee
- *      security:
- *          - bearerAuth: []
  *      parameters:
  *          - in: path
  *            name: id
@@ -141,10 +142,12 @@ router.get( "/", asyncMiddleware( controller.getAllEmployees ) );
  *              $ref: '#/components/responses/NotFound'
  *          '500':
  *              $ref: '#/components/responses/InternalServerError'
+ *      security:
+ *        - bearerAuth: []
  *      tags:
  *          - Employee
  */
-router.get( "/:id", asyncMiddleware( controller.getEmployeeById ) );
+router.get( "/:id", authMiddleware, asyncMiddleware( controller.getEmployeeById ) );
 
 /**
  * @swagger
@@ -213,10 +216,12 @@ router.get( "/:id", asyncMiddleware( controller.getEmployeeById ) );
  *              $ref: '#/components/responses/Unauthorized'
  *          '500':
  *              $ref: '#/components/responses/InternalServerError'
+ *      security:
+ *        - bearerAuth: []
  *      tags:
  *          - Employee
  */
-router.post( "/", asyncMiddleware( controller.createEmployee ) );
+router.post( "/", authMiddleware, asyncMiddleware( controller.createEmployee ) );
 
 /**
  * @swagger
@@ -290,10 +295,12 @@ router.post( "/", asyncMiddleware( controller.createEmployee ) );
  *              $ref: '#/components/responses/NotFound'
  *          '500':
  *              $ref: '#/components/responses/InternalServerError'
+ *      security:
+ *        - bearerAuth: []
  *      tags:
  *          - Employee
  */
-router.patch( "/:id", asyncMiddleware( controller.updateEmployee ) );
+router.patch( "/:id", authMiddleware, asyncMiddleware( controller.updateEmployee ) );
 
 /**
  * @swagger
@@ -318,9 +325,11 @@ router.patch( "/:id", asyncMiddleware( controller.updateEmployee ) );
  *              $ref: '#/components/responses/NotFound'
  *          '500':
  *              $ref: '#/components/responses/InternalServerError'
+ *      security:
+ *        - bearerAuth: []
  *      tags:
  *          - Employee
  */
-router.delete( "/:id", asyncMiddleware( controller.deleteEmployee ) );
+router.delete( "/:id", authMiddleware, asyncMiddleware( controller.deleteEmployee ) );
 
 module.exports = router;

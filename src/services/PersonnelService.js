@@ -1,6 +1,5 @@
 const axios = require( "axios" );
 const Employee = require( "../models/Employee" );
-const { find } = require( "lodash" );
 
 const authUri = process.env.AUTH_URI;
 
@@ -16,7 +15,7 @@ const getAllEmployees = async ( token ) => {
     if ( authEmployees ) {
         return authEmployees.map( ( authEmployee ) => {
             const value = authEmployee;
-            const emp = find( employees, e => e.id === authEmployee.id );
+            const emp = employees.find( e => e.id === authEmployee.id );
 
             if ( emp ) {
                 value.firstname = emp.firstname;
@@ -120,6 +119,7 @@ const deleteEmployee = async ( id, token ) => {
     }
 
     await axios.delete( `${ authUri }/users/${ id }`, { headers: { Authorization: token } } );
+
     return employee;
 };
 
