@@ -1,4 +1,6 @@
 # Personnel Service
+[![Build Status](http://drone.devheaven.nl/api/badges/devheaven-platform/personnel-service/status.svg)](http://drone.devheaven.nl/devheaven-platform/personnel-service)
+
 This repository contains the personnel service for the DevHeaven platform.
 
 # Contribution
